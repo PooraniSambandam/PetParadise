@@ -32,6 +32,15 @@ $DBcon->close();
 	margin-left:150px;
 	margin-right:200px;
 }
+.par
+{
+	
+	padding: 5px;
+	font-family: Tahoma, sans-serif;
+	
+	
+}
+
 
 </style>
 
@@ -46,7 +55,7 @@ $DBcon->close();
 </head>
 <body>
 
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -82,7 +91,7 @@ $DBcon->close();
 <br>
 <br>
 <center>
-<p>POST INFORMATION FOR RESCUE/ADOPTION</p>
+<p class="par">POST INFORMATION FOR RESCUE/ADOPTION</p>
 
 <form class="form-inline" id="sameform" action="adop.php" method="POST" enctype="multipart/form-data">
   <div class="form-group" style="text-align:center;">
@@ -105,15 +114,15 @@ UPLOAD IMAGE<input type="file" name="image" class="form-control">
 	{
 		include "dbconnect.php";
 		$con=mysqli_connect($DBhost,$DBuser,$DBpass,$DBname);
+		$con->query("SELECT * FROM breed") ;
 		$imageName=($_FILES['image']['name']);
-		$imageData=addslashes(file_get_contents($_FILES["image"]["tmp_name"]));
+		$imageData=mysql_escape_string(file_get_contents($_FILES["image"]["tmp_name"]));
 		$imageType=($_FILES['image']['type']);
 		$des=$_POST['des'];
-		
 		if(substr($imageType,0,5) == "image")
 		{
 			echo "Code working...";
-			$DBcon->query("INSERT INTO adop(name,image,des)VALUES('$imageName','$imageData','$des')");
+			$con->query("INSERT INTO adop(name,image,des)VALUES('$imageName','$imageData','$des')");
 			echo "Image uploaded!!";
 		}
 		else
@@ -123,7 +132,7 @@ UPLOAD IMAGE<input type="file" name="image" class="form-control">
 
 }
 ?>
- <p>Pet Descriptions</p>
+ <center><b><p class="par">Pet Descriptions</p></b></center>
  
  <?php
 	include "dbconnect.php";
@@ -131,7 +140,7 @@ UPLOAD IMAGE<input type="file" name="image" class="form-control">
 	$result=mysqli_query($DBcon,$select);
 	while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
 	{
-		$i=1;
+		$i=6;
 ?>
 	<div style="margin-top:100px;margin-left:200px;margin-right:200px;font-family:Verdana, Geneva, sans-serif;">
 		<pre class="c2">
